@@ -1,0 +1,53 @@
+<h1>Welcome, <%= user.firstname %>!</h1>
+<div style="margin-bottom: 1em;">
+  <label style="display: flex; align-items: center; gap: 0.5em;">
+    <input type="checkbox" id="notifyToggle" <%= user.notify ? 'checked' : '' %>>
+    Allow alerts by email
+  </label>
+  <div style="font-size: 0.95em; color: #555; margin-top: 0.3em;">
+    If enabled, you will receive email notifications when another family member mentions you in a Missing Message. No marketing or spam will be sent—only important alerts from your trusted contacts.
+  </div>
+</div>
+<% if (typeof message !== 'undefined') { %>
+  <div class="alert alert-success"><%= message %></div>
+<% } %>
+<% if (typeof error !== 'undefined') { %>
+  <div class="alert alert-danger"><%= error %></div>
+<% } %>
+<div class="main-sections">
+  <section>
+    <h2>Got Me Now</h2>
+    <form id="gotMeForm" method="POST" action="/main/gotme">
+      <input type="hidden" id="locationInput" name="location">
+      <button type="submit" id="gotMeBtn">Got Me Now</button>
+      <span id="locationStatus" style="margin-left:10px;color:#888;"></span>
+    </form>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/toast.js"></script>
+  <script src="/gotMeNow.js"></script>
+  <script src="/toggleNotify.js"></script>
+  <script src="/messageForm.js"></script>
+  </section>
+  <section>
+    <h2>Missing Message</h2>
+    <form id="messageForm" method="POST" action="/main/message">
+      <textarea name="message" placeholder="Type your message..."></textarea>
+      <input type="text" name="mention" placeholder="Mention user (firstname)">
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+  <section>
+    <h2>Received Messages</h2>
+    <div id="receivedMessages">
+      <% if (receivedMessages && receivedMessages.length) { %>
+        <ul>
+          <% receivedMessages.forEach(function(msg) { %>
+            <li><strong><%= msg.from ? msg.from.firstname : 'Unknown' %>:</strong> <%= msg.text %></li>
+          <% }); %>
+        </ul>
+      <% } else { %>
+        <p>No messages received yet.</p>
+      <% } %>
+    </div>
+  </section>
+</div>
