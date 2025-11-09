@@ -111,7 +111,7 @@ app.use(expressWinston.logger({
 }));
 
 
-// Landing page route
+// Landing page route (rendered view)
 app.get('/', (req, res) => {
   res.render('landing', { title: 'FindMe Argent', user: req.user });
 });
@@ -124,7 +124,7 @@ app.use('/auth', authRoutes);
 const mainRoutes = require('./routes/main.routes');
 app.use('/main', mainRoutes);
 
-// Routes
+// API Routes
 app.use('/api', rootRoutes);
 
 // Swagger API docs
