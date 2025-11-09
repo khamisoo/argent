@@ -1,53 +1,96 @@
-<h1>Welcome, <%= user.firstname %>!</h1>
-<div style="margin-bottom: 1em;">
-  <label style="display: flex; align-items: center; gap: 0.5em;">
-    <input type="checkbox" id="notifyToggle" <%= user.notify ? 'checked' : '' %>>
-    Allow alerts by email
-  </label>
-  <div style="font-size: 0.95em; color: #555; margin-top: 0.3em;">
-    If enabled, you will receive email notifications when another family member mentions you in a Missing Message. No marketing or spam will be sent—only important alerts from your trusted contacts.
-  </div>
-</div>
-<% if (typeof message !== 'undefined') { %>
-  <div class="alert alert-success"><%= message %></div>
-<% } %>
-<% if (typeof error !== 'undefined') { %>
-  <div class="alert alert-danger"><%= error %></div>
-<% } %>
-<div class="main-sections">
-  <section>
-    <h2>Got Me Now</h2>
-    <form id="gotMeForm" method="POST" action="/main/gotme">
-      <input type="hidden" id="locationInput" name="location">
-      <button type="submit" id="gotMeBtn">Got Me Now</button>
-      <span id="locationStatus" style="margin-left:10px;color:#888;"></span>
-    </form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome <%= user.firstname %> | FindMe Argent</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Custom CSS -->
   <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <!-- floating hearts -->
+  <div class="hearts-layer">
+    <i class="bi bi-heart-fill heart" style="left:10%;animation-delay:0s;"></i>
+    <i class="bi bi-heart-fill heart" style="left:25%;animation-delay:4s;"></i>
+    <i class="bi bi-heart-fill heart" style="left:50%;animation-delay:8s;"></i>
+    <i class="bi bi-heart-fill heart" style="left:75%;animation-delay:12s;"></i>
+    <i class="bi bi-heart-fill heart" style="left:90%;animation-delay:16s;"></i>
+  </div>
+
+  <div class="dashboard-container position-relative z-1">
+    <h1>Welcome, <%= user.firstname %> 💜</h1>
+
+    <!-- Notification Toggle -->
+    <div class="form-check form-switch mb-3">
+      <input class="form-check-input" type="checkbox" id="notifyToggle" <%= user.notify ? 'checked' : '' %>>
+      <label class="form-check-label" for="notifyToggle">Allow alerts by email</label>
+    </div>
+    <p class="text-muted small">
+      If enabled, you will receive alerts when family members mention you in a Missing Message.  
+      No marketing or spam — only important notifications.
+    </p>
+
+    <!-- Alerts -->
+    <% if (typeof message !== 'undefined') { %>
+      <div class="alert alert-success d-flex align-items-center mt-3"><i class="bi bi-check-circle me-2"></i><%= message %></div>
+    <% } %>
+    <% if (typeof error !== 'undefined') { %>
+      <div class="alert alert-danger d-flex align-items-center mt-3"><i class="bi bi-exclamation-triangle me-2"></i><%= error %></div>
+    <% } %>
+
+    <!-- Got Me Now Section -->
+    <section>
+      <h2><i class="bi bi-geo-alt-fill text-danger"></i>Got Me Now</h2>
+      <form id="gotMeForm" method="POST" action="/main/gotme" class="d-flex align-items-center gap-3">
+        <input type="hidden" id="locationInput" name="location">
+        <button type="submit" id="gotMeBtn"><i class="bi bi-arrow-repeat me-2"></i>Share My Location</button>
+        <span id="locationStatus" class="text-secondary small"></span>
+      </form>
+    </section>
+
+    <!-- Missing Message -->
+    <section>
+      <h2><i class="bi bi-chat-dots-fill text-primary"></i>Missing Message</h2>
+      <form id="messageForm" method="POST" action="/main/message">
+        <textarea name="message" placeholder="Type your message..." required></textarea>
+        <input type="text" name="mention" placeholder="Mention user (firstname)" required>
+        <button type="submit"><i class="bi bi-send me-2"></i>Send Message</button>
+      </form>
+    </section>
+
+    <!-- Received Messages -->
+    <section>
+      <h2><i class="bi bi-envelope-open-heart text-success"></i>Received Messages</h2>
+      <div id="receivedMessages">
+        <% if (receivedMessages && receivedMessages.length) { %>
+          <ul>
+            <% receivedMessages.forEach(function(msg) { %>
+              <li>
+                <strong><%= msg.from ? msg.from.firstname : 'Unknown' %>:</strong>
+                <span><%= msg.text %></span>
+              </li>
+            <% }); %>
+          </ul>
+        <% } else { %>
+          <p class="text-muted">No messages received yet.</p>
+        <% } %>
+      </div>
+    </section>
+  </div>
+
+  <!-- JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="/toast.js"></script>
   <script src="/gotMeNow.js"></script>
   <script src="/toggleNotify.js"></script>
   <script src="/messageForm.js"></script>
-  </section>
-  <section>
-    <h2>Missing Message</h2>
-    <form id="messageForm" method="POST" action="/main/message">
-      <textarea name="message" placeholder="Type your message..."></textarea>
-      <input type="text" name="mention" placeholder="Mention user (firstname)">
-      <button type="submit">Send Message</button>
-    </form>
-  </section>
-  <section>
-    <h2>Received Messages</h2>
-    <div id="receivedMessages">
-      <% if (receivedMessages && receivedMessages.length) { %>
-        <ul>
-          <% receivedMessages.forEach(function(msg) { %>
-            <li><strong><%= msg.from ? msg.from.firstname : 'Unknown' %>:</strong> <%= msg.text %></li>
-          <% }); %>
-        </ul>
-      <% } else { %>
-        <p>No messages received yet.</p>
-      <% } %>
-    </div>
-  </section>
-</div>
+</body>
+</html>

@@ -1,4 +1,334 @@
-/* Toast styles */
+/* ==================== ROOT VARIABLES ==================== */
+:root {
+  --primary-gradient: linear-gradient(135deg, #8e2de2, #4a00e0);
+  --accent-gradient: linear-gradient(135deg, #ff758c, #ff7eb3);
+  --success-gradient: linear-gradient(135deg, #43e97b, #38f9d7);
+  --light-bg: #f9f9ff;
+  --bg-light: #f9f9ff;
+  --text-color: #222;
+  --radius: 20px;
+  --shadow: 0 6px 25px rgba(0,0,0,0.1);
+  --transition: all 0.3s ease;
+}
+
+/* ==================== GLOBAL STYLES ==================== */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 40%, #ff7eb3 100%);
+  background-attachment: fixed;
+  color: #222;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Landing page body layout */
+body.landing-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ==================== FLOATING HEARTS ==================== */
+.heart {
+  position: absolute;
+  color: rgba(255,255,255,0.3);
+  font-size: 18px;
+  animation: float 18s linear infinite;
+}
+
+@keyframes float {
+  from { transform: translateY(100vh) scale(0.8); opacity: 0; }
+  20% { opacity: 0.3; }
+  80% { opacity: 0.3; }
+  to { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+}
+
+.hearts-layer {
+  position: fixed;
+  top: 0; 
+  left: 0;
+  width: 100%; 
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* ==================== ANIMATIONS ==================== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==================== MAIN DASHBOARD STYLES ==================== */
+.dashboard-container {
+  max-width: 850px;
+  margin: 6rem auto 3rem;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(25px);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 2.5rem;
+  animation: fadeIn 0.8s ease;
+}
+
+.dashboard-container h1 {
+  text-align: center;
+  font-weight: 700;
+  font-size: 2rem;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1rem;
+}
+
+.dashboard-container section {
+  margin-top: 2rem;
+}
+
+.dashboard-container h2 {
+  font-weight: 600;
+  font-size: 1.3rem;
+  color: #4a00e0;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.form-check-input {
+  accent-color: #8e2de2;
+}
+
+.alert {
+  border-radius: var(--radius);
+  font-weight: 500;
+}
+
+/* Got Me Now Button */
+#gotMeBtn {
+  background: var(--accent-gradient);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 0.8rem 1.5rem;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+#gotMeBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255,120,180,0.4);
+}
+
+/* Message Form Styles */
+textarea, input[type="text"] {
+  border: 2px solid rgba(142,45,226,0.1);
+  border-radius: 12px;
+  padding: 0.8rem 1rem;
+  width: 100%;
+  transition: var(--transition);
+  margin-bottom: 1rem;
+}
+
+textarea:focus, input[type="text"]:focus {
+  outline: none;
+  border-color: #8e2de2;
+  box-shadow: 0 0 0 .2rem rgba(142,45,226,0.15);
+}
+
+button[type="submit"] {
+  background: var(--primary-gradient);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 0.8rem 1.5rem;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(142,45,226,0.3);
+}
+
+/* Message List Styles */
+#receivedMessages ul {
+  list-style: none;
+  padding: 0;
+}
+
+#receivedMessages li {
+  background: rgba(255,255,255,0.8);
+  border-left: 5px solid #8e2de2;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  margin-bottom: 0.75rem;
+  transition: var(--transition);
+}
+
+#receivedMessages li:hover {
+  transform: translateX(5px);
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+/* ==================== LOGIN PAGE STYLES ==================== */
+.login-card {
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(25px);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 3rem 2.5rem;
+  width: 100%;
+  max-width: 420px;
+  animation: fadeInUp 0.8s ease forwards;
+  transform: translateY(20px);
+  opacity: 0;
+}
+
+.app-logo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--primary-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 2rem;
+  box-shadow: 0 10px 30px rgba(142,45,226,0.3);
+  margin: 0 auto 1rem;
+}
+
+.login-card h1 {
+  font-weight: 700;
+  font-size: 2rem;
+  text-align: center;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.5rem;
+}
+
+.login-card p.subtitle {
+  text-align: center;
+  color: #777;
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+}
+
+.login-card .form-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.input-group-text {
+  background: var(--accent-gradient);
+  color: #fff;
+  border: none;
+}
+
+.form-control {
+  border: 2px solid rgba(142,45,226,0.15);
+  border-radius: 12px;
+  transition: var(--transition);
+  padding: 0.8rem 1rem;
+}
+
+.form-control:focus {
+  border-color: #8e2de2;
+  box-shadow: 0 0 0 .2rem rgba(142,45,226,0.2);
+}
+
+.login-btn {
+  background: var(--accent-gradient);
+  border: none;
+  color: #fff;
+  border-radius: 12px;
+  padding: 0.9rem 1.2rem;
+  font-weight: 600;
+  width: 100%;
+  transition: var(--transition);
+  margin-top: 0.5rem;
+}
+
+.login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255,120,180,0.4);
+}
+
+.footer-note {
+  text-align: center;
+  color: #999;
+  font-size: 0.85rem;
+  margin-top: 1.5rem;
+}
+
+/* ==================== LAYOUT NAVBAR STYLES ==================== */
+.navbar {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.4rem;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-decoration: none;
+}
+
+.navbar .nav-link {
+  color: #333;
+  font-weight: 500;
+  margin-left: 1rem;
+  transition: var(--transition);
+}
+
+.navbar .nav-link:hover {
+  color: #8e2de2;
+  transform: translateY(-2px);
+}
+
+.welcome-text {
+  font-weight: 500;
+  color: #555;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 0.35rem 0.8rem;
+  border-radius: var(--radius);
+  margin-right: 1rem;
+}
+
+main {
+  position: relative;
+  z-index: 2;
+  padding: 5rem 1rem 2rem;
+  animation: fadeIn 0.6s ease-out;
+}
+
+footer {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+  padding: 1rem 0;
+  margin-top: 3rem;
+}
+
+/* ==================== TOAST STYLES ==================== */
 .toast {
   position: fixed;
   left: 50%;
@@ -17,11 +347,13 @@
   transition: opacity 0.4s, bottom 0.4s;
   box-shadow: 0 2px 16px rgba(0,0,0,0.18);
 }
+
 .toast.show {
   opacity: 1;
   bottom: 60px;
   pointer-events: auto;
 }
+
 .toast-success { background: #28a745; }
 .toast-error { background: #dc3545; }
 .toast-info { background: #007bff; }
