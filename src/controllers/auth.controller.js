@@ -15,9 +15,26 @@ exports.registerOrLogin = async (req, res, next) => {
       return error(res, 'User not found or data does not match. Please check your name and number.', 401);
     }
     req.login(user, (err) => {
-      if (err) return next(err);
-      logger.info('User logged in: %s (%s)', firstname, phone);
-      return res.redirect('/main');
+      if (err) {
+        logger.error('Login error: %s', err.message);
+        return next(err);
+      }
+      
+      // Save session before redirecting
+      req.session.save((saveErr) => {
+        if (saveErr) {
+          logger.error('Session save error: %s', saveErr.message);
+          return next(saveErr);
+        }
+        
+        logger.info('User logged in successfully: %s (%s) - Session ID: %s', firstname, phone, req.sessionID);
+        logger.debug('Session data: %s', JSON.stringify(req.session));
+        
+        // Add a small delay to ensure session is committed
+        setTimeout(() => {
+          res.redirect('/main');
+        }, 100);
+      });
     });
   } catch (err) {
     logger.error('Auth error: %s', err.message);

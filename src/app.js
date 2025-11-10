@@ -30,6 +30,7 @@ const swaggerSpecs = swaggerJsdoc(swaggerOptions);
 
 const path = require('path');
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
 const passport = require('passport');
 const User = require('./models/User.model');
 // Session and passport setup
@@ -37,6 +38,17 @@ app.use(session({
   secret: process.env.SESSION_SECRET || 'argent_secret',
   resave: false,
   saveUninitialized: false,
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGO_URI,
+    ttl: 24 * 60 * 60, // Session TTL in seconds (24 hours)
+    autoRemove: 'native'
+  }),
+  cookie: {
+    secure: false, // Set to true if using HTTPS in production
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+  },
+  name: 'argentSession' // Custom session name
 }));
 app.use(passport.initialize());
 app.use(passport.session());
